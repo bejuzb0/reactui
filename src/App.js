@@ -1,25 +1,44 @@
-import logo from './logo.svg';
 import './App.css';
+import MyWebChat from './myWebChat';
+import axios from 'axios';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import React, { Component } from 'react'
+
+class App extends Component {
+  constructor() {
+    super();
+
+    this.state = {
+      token : '5oDRYGF8qdM.p1xbqP9awuRsTVGxfoi5ODhJO1eP9lN0RHCSu5tPxhI'
+    }
+  }
+  componentDidMount() {
+    const headers = {
+      'Authorization': 'Bearer 5oDRYGF8qdM.p1xbqP9awuRsTVGxfoi5ODhJO1eP9lN0RHCSu5tPxhI'
+    }
+    
+    axios.post('https://directline.botframework.com/v3/directline/tokens/generate', null, {
+      headers : headers
+    })
+    .then((response) => {
+      console.log(response);
+      this.setState({
+        token : response.data.token
+      });
+    })
+    .catch((err) => {
+      console.log("Error"+ err);
+    })
+
+  }
+  
+  render() {
+    return (
+      <div className="webchat">
+        <MyWebChat token={this.state.token} />
+      </div>
+    )
+  }
 }
 
 export default App;
